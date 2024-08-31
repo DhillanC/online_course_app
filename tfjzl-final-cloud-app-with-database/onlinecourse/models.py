@@ -99,7 +99,7 @@ class Question(models.Model):
     grade = models.PositiveIntegerField(default=50)
 
     def __str__(self):
-        #return f"Question: {self.text} (Grade: {self.grade})"
+        #return f"Question: {self.text} (Grade: {self.grade})" -- Possible future improvement
         return "Question: " + self.content
 
     # method to calculate if the learner gets the score of the question
@@ -116,9 +116,6 @@ class Choice(models.Model):
     content = models.CharField(max_length=200)
     is_correct = models.BooleanField(default=False)
 
-# One enrollment could have multiple submission
-# One submission could have multiple choices
-# One choice could belong to multiple submissions
 class Submission(models.Model):
     enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
     choices = models.ManyToManyField(Choice)
