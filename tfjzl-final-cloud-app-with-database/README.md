@@ -1,15 +1,111 @@
+# Project Summary
 
-**General Notes**
+Setup of base online course application
 
-An `onlinecourse` app has already been provided in this repo upon which you will be adding a new assesement feature.
+- Added initial project structure for the online course app.
+- Includes Django app configuration, models, views, and templates for course management.
+- ER diagram provided for upcoming assessment feature implementation.
+- Default SQL database: SQLite3 (can be configured for PostgreSQL or MySQL based on deployment).
+- Cloud deployment support (default: IBM Cloud Foundry).
 
-- If you want to develop the final project on Theia hosted by [IBM Developer Skills Network](https://labs.cognitiveclass.ai/), you will need to create the same project structure on Theia workspace and save it everytime you close the browser
-- Or you could develop the final project locally by setting up your own Python runtime and IDE
-- Hints for the final project are left on source code files
-- You may choose any cloud platform for deployment (default is IBM Cloud Foundry)
-- Depends on your deployment, you may choose any SQL database Django supported such as SQLite3, PostgreSQL, and MySQL (default is SQLite3)
+## ER Diagram**
 
-**ER Diagram**
-For your reference, we have prepared the ER diagram design for the new assesement feature.
 
-![Onlinecourse ER Diagram](https://github.com/ibm-developer-skills-network/final-cloud-app-with-database/blob/master/static/media/course_images/onlinecourse_app_er.png)
+```mermaid
+
+erDiagram
+    auth_user {
+        int id
+        varchar password
+        datetime last_login
+        bool is_superuser
+        varchar username
+        varchar first_name
+        varchar last_name
+        varchar email
+        bool is_staff
+        bool is_active
+        datetime date_joined
+    }
+
+    onlinecourse_course {
+        int id
+        varchar name
+        varchar image
+        varchar description
+        datetime pub_date
+        int total_enrollment
+    }
+
+    onlinecourse_lesson {
+        int id
+        int order
+        text content
+        int course_id
+    }
+
+    onlinecourse_question {
+        int id
+        text question_text
+        int grade
+        int lesson_id
+    }
+
+    onlinecourse_choice {
+        int id
+        text choice_text
+        bool is_correct
+        int question_id
+    }
+
+    onlinecourse_enrollment {
+        int id
+        date date_enrolled
+        int mode
+        int rating
+        int course_id
+        int user_id
+    }
+
+    onlinecourse_submission {
+        int id
+        int enrollment_id
+    }
+
+    onlinecourse_submission_choices {
+        int id
+        int submission_id
+        int choice_id
+    }
+
+    onlinecourse_instructor {
+        int id
+        bool full_time
+        int total_learners
+        int user_id
+    }
+
+    onlinecourse_course_instructors {
+        int id
+        int course_id
+        int instructor_id
+    }
+
+    onlinecourse_learner {
+        int id
+        varchar occupation
+        varchar social_link
+        int user_id
+    }
+
+    %% Relationships
+    auth_user ||--o{ onlinecourse_enrollment : enrolls
+    auth_user ||--o{ onlinecourse_learner : learns
+    auth_user ||--o{ onlinecourse_instructor : instructs
+    onlinecourse_course ||--o{ onlinecourse_lesson : contains
+    onlinecourse_lesson ||--o{ onlinecourse_question : includes
+    onlinecourse_question ||--o{ onlinecourse_choice : has
+    onlinecourse_enrollment ||--o{ onlinecourse_submission : has
+    onlinecourse_submission ||--o{ onlinecourse_submission_choices : includes
+    onlinecourse_course ||--o{ onlinecourse_course_instructors : taught_by
+    onlinecourse_instructor ||--o{ onlinecourse_course_instructors : teaches
