@@ -99,8 +99,8 @@ class Question(models.Model):
     grade = models.PositiveIntegerField(default=50)
 
     def __str__(self):
-        #return f"Question: {self.text} (Grade: {self.grade})" -- Possible future improvement
-        return "Question: " + self.content
+        return f"Question: {self.text} (Grade: {self.grade})"
+        #return "Question: " + self.content
 
     # method to calculate if the learner gets the score of the question
     def is_get_score(self, selected_ids):
