@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from django.views import generic
 import logging
 from .models import Course, Enrollment, Question, Choice, Submission
+import json
+from django.http import HttpResponse
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -143,3 +145,34 @@ def show_exam_result(request, course_id, submission_id):
 
     # Render result template
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
+
+"""
+def export_courses_json(request):
+    # Fetch all courses
+    courses = Course.objects.all()
+
+    # Serialize course data
+    courses_data = []
+    for course in courses:
+        lessons_data = []
+        for lesson in course.lesson_set.all():
+            lessons_data.append({
+                'title': lesson.title,
+                'content': lesson.content,
+            })
+
+        courses_data.append({
+            'name': course.name,
+            'description': course.description,
+            'lessons': lessons_data,
+        })
+
+    # Convert to JSON
+    response_data = json.dumps(courses_data, indent=4)
+
+    # Return the JSON as a file response
+    response = HttpResponse(response_data, content_type='application/json')
+    response['Content-Disposition'] = 'attachment; filename="courses.json"'
+    
+    return response
+"""
