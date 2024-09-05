@@ -146,7 +146,6 @@ def show_exam_result(request, course_id, submission_id):
     # Render result template
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
 
-"""
 def export_courses_json(request):
     # Fetch all courses
     courses = Course.objects.all()
@@ -160,11 +159,24 @@ def export_courses_json(request):
                 'title': lesson.title,
                 'content': lesson.content,
             })
+    
+        # Fetch enrolled learners
+        learners_data = []
+        enrollments = Enrollment.objects.filter(course=course)
+        for enrollment in enrollments:
+
+            learners_data.append({
+                'username': enrollment.user.username,
+                'first_name': enrollment.user.first_name,
+                'last_name': enrollment.user.last_name,
+                'email': enrollment.user.email,
+            })
 
         courses_data.append({
             'name': course.name,
             'description': course.description,
             'lessons': lessons_data,
+            'learners': learners_data,
         })
 
     # Convert to JSON
@@ -175,4 +187,3 @@ def export_courses_json(request):
     response['Content-Disposition'] = 'attachment; filename="courses.json"'
     
     return response
-"""

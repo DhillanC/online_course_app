@@ -16,5 +16,6 @@ urlpatterns = [
     path('<int:course_id>/enroll/', views.enroll, name='enroll'),
     path('<int:course_id>/submit/', views.submit, name="submit"),
     path('<int:course_id>/submission/<int:submission_id>/result/', views.show_exam_result, name='exam_result'),
+    path('export/json/', views.export_courses_json, name='export_courses_json'),
 
  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
