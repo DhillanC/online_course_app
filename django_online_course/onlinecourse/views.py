@@ -147,6 +147,7 @@ def show_exam_result(request, course_id, submission_id):
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
 
 def export_courses_json(request):
+    """Method to export a JSON file with the courses' information"""
     # Fetch all courses
     courses = Course.objects.all()
 
@@ -187,3 +188,4 @@ def export_courses_json(request):
     response['Content-Disposition'] = 'attachment; filename="courses.json"'
     
     return response
+
